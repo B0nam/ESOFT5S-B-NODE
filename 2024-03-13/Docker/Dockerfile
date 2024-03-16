@@ -1,28 +1,14 @@
-#
-# MongoDB Dockerfile
-#
-# https://github.com/dockerfile/mongodb
-#
+# PULL BASE IMAGE
+FROM mongo:latest
 
-# Pull base image.
-FROM dockerfile/ubuntu
-
-# Install MongoDB.
-RUN \
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
-  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' > /etc/apt/sources.list.d/mongodb.list && \
-  apt-get update && \
-  apt-get install -y mongodb-org && \
-  rm -rf /var/lib/apt/lists/*
-
-# Define mountable directories.
-VOLUME ["/data/db"]
-
-# Define working directory.
-WORKDIR /data
-
-# Define default command.
-CMD ["mongod"]
+# MONGO ENVIROMENT
+ENV \
+  # DEFINE ROOT USERNAME
+  MONGO_INITDB_ROOT_USERNAME=mongoadmin \
+  # DEFINE ROOT PASSWORD
+  MONGO_INITDB_ROOT_PASSWORD=Abacate123 \
+  # DEFINE DATABASE NAME
+  MONGO_INITDB_DATABASE=esoft5s-books
 
 # Expose ports.
 #   - 27017: process
