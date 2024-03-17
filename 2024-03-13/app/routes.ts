@@ -15,6 +15,8 @@ routes.get('/books/:id', bookController.getById);
 routes.post('/books', bookController.create);
 // DELETE BOOK BY ID
 routes.delete('/books/:id', bookController.delete);
+// UPDATE BOOK BY ID
+routes.put('/books/:id', bookController.update);
 
 export {
     routes

@@ -1,6 +1,6 @@
 import bookModel from './book.schema'
 
-export class BookService {
+class BookService {
 
     async getById(id: string) {
         return await bookModel.findById(id);
@@ -11,12 +11,16 @@ export class BookService {
     }
 
     async create(book: any) {
-        const createdBook = bookModel.create(book)
-        return createdBook
+        return await bookModel.create(book);
     }
 
     async delete(id: string) {
         return await bookModel.findByIdAndDelete(id);
     }
 
+    async update(id: string, book: any) {
+        return await bookModel.findByIdAndUpdate(id, book);
+    }
 }
+
+export default new BookService();
