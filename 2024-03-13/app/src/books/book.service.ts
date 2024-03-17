@@ -15,4 +15,8 @@ export class BookService {
         return createdBook
     }
 
+    async delete(id: string) {
+        return await bookModel.findByIdAndDelete(id);
+    }
+
 }
