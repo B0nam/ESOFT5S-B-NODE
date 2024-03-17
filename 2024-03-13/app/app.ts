@@ -20,7 +20,7 @@ class App {
     private async database() {
         try {
             mongoose.set("strictQuery", true)
-            await mongoose.connect('mongodb://mongoadmin:Abacate123@0.0.0.0:27017/')
+            await mongoose.connect('mongodb://mongouser:Abacate123@0.0.0.0:27017/esoft5s-books')
             console.log('Connect database success')
         } catch (error) {
             console.error('Cannot connect to database, error:', error)
