@@ -10,8 +10,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^20.11.30",
-    "fastify": "^4.26.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@fastify/postgres": "^5.2.2",
+    "fastify": "^4.26.2",
+    "pg": "^8.11.3"
   }
 }

@@ -1,14 +1,9 @@
-import Fastify from 'fastify'
+import app from './app'
 
 function main(){
-	fastify.listen({ port: 3000 }, function (err, address) {
-		if (err) {
-		  fastify.log.error(err)
-		  process.exit(1)
-		}
-		// Server is now listening on ${address}
-	  })
-	
+    app.listen(3000, 'localhost', () => {
+        console.log('Server running at port 3000')
+    })
 }
 
 main()
