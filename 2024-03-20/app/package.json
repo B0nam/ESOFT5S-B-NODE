@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Steps to run this project:",
   "main": "index.js",
   "scripts": {
     "start": "ts-node main.ts",
@@ -10,14 +10,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.11.30",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
-  },
   "dependencies": {
     "@fastify/postgres": "^5.2.2",
     "fastify": "^4.26.2",
-    "pg": "^8.11.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   }
 }
