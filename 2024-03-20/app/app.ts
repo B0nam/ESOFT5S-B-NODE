@@ -2,6 +2,8 @@ import Fastify, { FastifyInstance } from "fastify"
 import plugin from "@fastify/postgres"
 import healthRoute from './src/routes/healthRoute'
 
+const databaseUrl = process.env.DATABASE_URL;
+
 class App {
     public fastifyInstance: FastifyInstance;
 
@@ -12,7 +14,7 @@ class App {
     }
 
     configureDatabase(app: FastifyInstance) {
-        app.register(plugin, { connectionString: "postgres://root:Abacate123@0.0.0.0:5432" });
+        app.register(plugin, { connectionString: databaseUrl });
     }
 
     configureRoutes(app: FastifyInstance) {
