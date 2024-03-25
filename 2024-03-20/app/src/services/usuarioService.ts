@@ -1,7 +1,7 @@
 import prisma from "../../prisma/prisma";
 import { UserData } from "../enums/interfaces";
 
-export class UsuariosService {
+export class UsuarioService {
     async obterUsuarioById(id: number) {
         return await prisma.usuario.findUnique({
             where: { id }

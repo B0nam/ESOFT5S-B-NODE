@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UsuariosService } from "../services/usuarioService";
+import { UsuarioService } from "../services/usuarioService";
 import { UserData } from "../enums/interfaces";
 
 export class UsuarioController {
-    private usuarioService: UsuariosService;
+    private usuarioService: UsuarioService;
 
     constructor(){
-        this.usuarioService = new UsuariosService();
+        this.usuarioService = new UsuarioService();
     }
 
     async obterTodosUsuarios(request: FastifyRequest, reply: FastifyReply) {

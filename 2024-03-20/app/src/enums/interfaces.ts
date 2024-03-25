@@ -14,3 +14,9 @@ export interface Usuario {
     senha: string;
     email: string;
 }
+
+// Inteface para dados de categoria
+export interface CategoriaData {
+    nome: string
+    cor: number
+}
