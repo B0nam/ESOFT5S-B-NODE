@@ -20,3 +20,15 @@ export interface CategoriaData {
     nome: string
     cor: number
 }
+
+// Interface para dados de Tarefa
+export interface TarefaData {
+    titulo: string
+    descricao: string
+    dt_criacao: Date
+    dt_conclusao: Date
+    tipo: number
+    categoriaId: number
+    status: number
+    usuarioId: number
+}
