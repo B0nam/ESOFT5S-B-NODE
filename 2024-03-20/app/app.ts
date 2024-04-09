@@ -1,8 +1,7 @@
 import Fastify, { FastifyInstance } from "fastify"
 import plugin from "@fastify/postgres"
-import healthRoute from './src/routes/healthRoute'
-import usuarioRoute from "./src/routes/usuarioRoute";
-import categoriaRoute from "./src/routes/categoriaRoute";
+import "reflect-metadata"
+import { AppDataSource } from "./src/config/data-source";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -10,20 +9,20 @@ class App {
     public fastifyInstance: FastifyInstance;
 
     constructor() {
-        this.fastifyInstance = Fastify( {logger: true });
+        this.fastifyInstance = Fastify( {logger: false });
         this.configureDatabase(this.fastifyInstance);
         this.configureRoutes(this.fastifyInstance);
         this.configureMiddleware(this.fastifyInstance);
     }
 
     configureDatabase(app: FastifyInstance) {
-        app.register(plugin, { connectionString: databaseUrl });
+        AppDataSource.initialize().then(() => {
+            console.log("[+] Data Source has been initialized!");}).catch((err) => {
+            console.error("[-] Error on data initialization", err);});
     }
 
     configureRoutes(app: FastifyInstance) {
-        healthRoute(app);
-        usuarioRoute(app);
-        categoriaRoute(app);
+        
     }
 
     configureMiddleware(app: FastifyInstance) {
