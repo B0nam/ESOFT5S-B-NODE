@@ -1,6 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Categoria } from "./Categoria"
 import { Usuario } from "./Usuario"
+import { Status } from "../enums/status"
 
 @Entity()
 export class Tarefa {
@@ -22,8 +23,8 @@ export class Tarefa {
     @Column()
     tipo!: number;
 
-    @Column()
-    status!: number;
+    @Column({type: "varchar", enum:Status})
+    status!: Status;
 
     @ManyToMany(() => Categoria)
     @JoinTable()

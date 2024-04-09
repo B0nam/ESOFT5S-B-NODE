@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
-import { Tarefa } from "./Tarefa"
+import { Cor } from "../enums/cores";
 
 @Entity()
 export class Categoria {
@@ -9,6 +9,6 @@ export class Categoria {
     @Column()
     nome!: string;
 
-    @Column()
-    cor!: number;
+    @Column({type: "varchar", enum:Cor})
+    cor!: Cor;
 }
