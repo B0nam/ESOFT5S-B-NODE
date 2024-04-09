@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance } from "fastify"
 import plugin from "@fastify/postgres"
 import "reflect-metadata"
 import { AppDataSource } from "./src/config/data-source";
+import healthRoute from "./src/routes/healthRoute";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -22,7 +23,7 @@ class App {
     }
 
     configureRoutes(app: FastifyInstance) {
-        
+        healthRoute(app);
     }
 
     configureMiddleware(app: FastifyInstance) {
