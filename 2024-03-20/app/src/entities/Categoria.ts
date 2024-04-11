@@ -11,4 +11,10 @@ export class Categoria {
 
     @Column({type: "varchar", enum:Cor})
     cor!: Cor;
+
+    constructor(id: number, nome: string, cor: Cor){
+        this.id = id;
+        this.nome = nome;
+        this.cor = cor;
+    }
 }
