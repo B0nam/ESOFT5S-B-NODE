@@ -11,7 +11,7 @@ https://dontpad.com/esoft5s-b-bussola
 - Da um check se o servidor está funcionando
 - Criar a service para a entidade escolhida, e fazer o CRUD
 - Fazer a controller
-- Criar as rotas no arquivo de mortas
+- Criar as rotas no arquivo de rotas
 - Testar as rotas
 - Partir para as rotas com regra de negócio
 
