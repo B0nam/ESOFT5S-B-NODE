@@ -3,6 +3,9 @@ import plugin from "@fastify/postgres"
 import "reflect-metadata"
 import { AppDataSource } from "./src/config/data-source";
 import healthRoute from "./src/routes/healthRoute";
+import usuarioRoute from "./src/routes/usuarioRoute";
+import tarefaRoute from "./src/routes/tarefaRoute";
+import categoriaRoute from "./src/routes/categoriaRoute";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -24,6 +27,9 @@ class App {
 
     configureRoutes(app: FastifyInstance) {
         healthRoute(app);
+        usuarioRoute(app);
+        tarefaRoute(app);
+        categoriaRoute(app);
     }
 
     configureMiddleware(app: FastifyInstance) {
