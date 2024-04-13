@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CategoriaService } from "../services/categoriaService";
+import { CategoriaData } from "../enums/interfaces";
 
 export class CategoriaController {
     private categoriaService: CategoriaService;
@@ -8,21 +9,59 @@ export class CategoriaController {
         this.categoriaService = new CategoriaService();
     }
 
-    async listarCategoriasPorUsuario(request:FastifyRequest, reply:FastifyReply){
+    // CREATE
+    async criarCategoria(request:FastifyRequest, reply:FastifyReply){
         try {
-            const usuarioId = Number(request.id);
-            const categorias = await this.categoriaService.listarCategoriasPorUsuario(usuarioId)
+            const data = request.body as CategoriaData;
+            const novaCategoria = await this.categoriaService.criarCategoria(data);
+            reply.send(novaCategoria);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+    // READ
+    async obterCategorias(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const categorias = await this.categoriaService.obterCategorias();
+            reply.send(categorias);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+    // READ BY ID
+    async obterCategoriaId(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const categoriaId = Number((request.params as { id: string }).id);
+            const categoria = await this.categoriaService.obterCategoriaId(categoriaId);
+            reply.send(categoria);
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");
         }
     }
 
-    async obterCategoriaPorId(request:FastifyRequest, reply:FastifyReply) {
-        try{
-            const categoriaId = Number(request.id);
-            const categorias = await this.categoriaService.obterCategoriaPorId(categoriaId);
-            reply.send(categorias);
+    // UPDATE
+    async atualizarCategoria(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const categoriaId = Number((request.params as { id: string }).id);
+            const data = request.body as CategoriaData;
+            const categoria = await this.categoriaService.atualizarCategoria(categoriaId, data);
+            reply.send(categoria);
+
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+    // DELETE
+    async removerCategoria(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const categoriaId = Number((request.params as { id: string }).id);
+            const categoria = await this.categoriaService.removerCategoria(categoriaId);
+            reply.send(categoria);
+            reply.send( { "message": "Categoria removida."});
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");
