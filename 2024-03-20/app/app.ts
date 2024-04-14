@@ -8,7 +8,6 @@ import tarefaRoute from "./src/routes/tarefaRoute";
 import categoriaRoute from "./src/routes/categoriaRoute";
 import { FastifyRequest } from "fastify/types/request";
 
-const databaseUrl = process.env.DATABASE_URL;
 export const SERVER_KEY = "SUPERSECRETAPIKEY"
 
 class App {
@@ -46,7 +45,7 @@ class App {
 
     configureAPIAuthentication(app: FastifyInstance) {
         app.addHook('preHandler', (request: FastifyRequest, reply: FastifyReply, done) => {
-            if (request.url === '/usuario/login/') {
+            if (request.url === '/usuario/login/' || request.url === '/') {
                 return done();
             }
             const authHeader = request.headers['x-api-key'];

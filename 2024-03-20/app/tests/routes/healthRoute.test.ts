@@ -1,4 +1,4 @@
-import app from '../../app'; // Importe seu aplicativo Fastify aqui
+import app from '../../app';
 import { AppDataSource } from '../../src/config/data-source';
 
 describe('Health Route', () => {
@@ -11,7 +11,6 @@ describe('Health Route', () => {
         expect(response.json()).toEqual({ message: "It's Alive!" });
     });
     afterAll(async () => {
-        // Aguarde a inicialização do banco de dados antes de finalizar os testes
         await AppDataSource.initialize();
       });
 });
