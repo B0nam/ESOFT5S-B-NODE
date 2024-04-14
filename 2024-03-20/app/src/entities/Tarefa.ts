@@ -2,6 +2,8 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColum
 import { Categoria } from "./Categoria"
 import { Usuario } from "./Usuario"
 import { Status } from "../enums/status"
+import { Tipo } from "../enums/tipos"
+
 
 @Entity()
 export class Tarefa {
@@ -15,32 +17,32 @@ export class Tarefa {
     descricao!: string;
 
     @Column()
-    dt_criacao!: Date;
+    dt_criacao!: string;
 
     @Column()
-    dt_conclusao!: Date;
+    dt_conclusao!: string;
 
-    @Column()
-    tipo!: number;
+    @Column({type: "varchar", enum:Tipo})
+    tipo!: Tipo;
 
     @Column({type: "varchar", enum:Status})
     status!: Status;
 
     @ManyToMany(() => Categoria)
     @JoinTable()
-    categoria!: Categoria;
+    categoria!: Categoria[];
 
     @ManyToOne(() => Usuario, (usuario) => usuario.tarefas)
     usuario!: Usuario;
 
-    constructor(id: number, titulo: string, descricao: string, dt_criacao: Date, dt_conclusao: Date, status: Status, categoria: Categoria, usuario: Usuario) {
-        this.id = id;
+    constructor(titulo: string, descricao: string, dt_criacao: string, dt_conclusao: string, status: Status, tipo: Tipo, categorias: Categoria[], usuario: Usuario) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.dt_criacao = dt_criacao;
         this.dt_conclusao = dt_conclusao;
         this.status = status;
-        this.categoria = categoria;
+        this.tipo = tipo;
+        this.categoria = categorias;
         this.usuario = usuario;
     }
 }

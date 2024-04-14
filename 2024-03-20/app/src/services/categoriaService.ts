@@ -1,5 +1,6 @@
 import { AppDataSource } from "../config/data-source";
 import { Categoria } from "../entities/Categoria";
+import { Cor } from "../enums/cores";
 import { CategoriaData } from "../enums/interfaces";
 import { Queries } from "./queries";
 
@@ -8,7 +9,7 @@ export class CategoriaService {
     categoriaRepository = AppDataSource.getRepository(Categoria)
 
     async criarCategoria(data: CategoriaData){
-        const categoria = new Categoria(data.nome, data.cor);
+        const categoria = new Categoria(data.nome, Cor[data.cor as keyof typeof Cor]);
         await AppDataSource.manager.save(categoria);
         console.log("[+] Uma nova categoria foi criada.");
         return categoria;
@@ -25,7 +26,7 @@ export class CategoriaService {
     }
 
     async atualizarCategoria(categoriaId: number, data: CategoriaData){
-        const categoria = await this.categoriaRepository.save({id: categoriaId, nome: data.nome, cor: data.cor});
+        const categoria = await this.categoriaRepository.save({id: categoriaId, nome: data.nome, cor: Cor[data.cor as keyof typeof Cor]});
         return categoria;
     }
 

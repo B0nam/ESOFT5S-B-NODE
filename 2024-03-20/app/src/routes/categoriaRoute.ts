@@ -30,6 +30,4 @@ export default function categoriaRoute (app: FastifyInstance) {
     })
 
     //LISTAR TODAS AS CATEGORIAS DE UM USUARIO
-
-    // OBTER DETALHES DE UMA CATEGORIA ESPECIFICA
 }

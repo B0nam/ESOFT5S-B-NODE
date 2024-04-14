@@ -21,8 +21,7 @@ export class Usuario {
     @OneToMany(() => Tarefa, (tarefa) => tarefa.usuario)
     tarefas!: Tarefa[]
 
-    constructor(id: number, username: string, peso: number, senha: string, email: string) {
-        this.id = id;
+    constructor(username: string, peso: number, senha: string, email: string) {
         this.username = username;
         this.peso = peso;
         this.senha = senha;
