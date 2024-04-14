@@ -24,5 +24,9 @@ export default function usuarioRoute (app: FastifyInstance) {
     app.delete('/usuario/:id', (request, reply) => {
         usuarioController.removerUsuario(request, reply);
     })
+    // LOGAR USUARIO
+    app.post('/usuario/login/', (request, reply) => {
+        usuarioController.logarUsuario(request, reply);
+    })
 
 }

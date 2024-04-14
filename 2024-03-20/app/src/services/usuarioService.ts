@@ -1,7 +1,7 @@
 import { AppDataSource } from "../config/data-source";
 import { Usuario } from "../entities/Usuario";
 import { Cor } from "../enums/cores";
-import { UsuarioData } from "../enums/interfaces";
+import { LoginData, UsuarioData } from "../enums/interfaces";
 import { Queries } from "./queries";
 
 export class UsuarioService {
@@ -33,6 +33,11 @@ export class UsuarioService {
     async removerUsuario(usuarioId: number){
         const usuario = await this.usuarioRepository.findOneBy({id: usuarioId});
         await this.usuarioRepository.delete(usuarioId);
-        return usuario
+        return usuario;
+    }
+
+    async logarUsuario(data: LoginData){
+        const usuario = await this.usuarioRepository.findOneBy({username: data.username, email: data.email, senha: data.senha});
+        return usuario;
     }
 }

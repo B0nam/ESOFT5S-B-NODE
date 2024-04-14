@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UsuarioService } from "../services/usuarioService";
-import { UsuarioData } from "../enums/interfaces";
+import { LoginData, UsuarioData } from "../enums/interfaces";
+import { SERVER_KEY } from "../../app";
 
 export class UsuarioController {
     private usuarioService: UsuarioService;
@@ -62,6 +63,22 @@ export class UsuarioController {
             const usuario = await this.usuarioService.removerUsuario(usuarioId);
             reply.send(usuario);
             reply.send( { "message": "Usuario removido."});
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // LOGAR USUARIO
+    async logarUsuario(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const data = request.body as LoginData;
+            const usuario = await this.usuarioService.logarUsuario(data);
+            if(!usuario){
+                reply.status(403).send("Acesso não autorizado.");
+                return;
+            }
+            reply.send({usuario, SERVER_KEY});
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");
