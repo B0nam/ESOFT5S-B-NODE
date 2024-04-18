@@ -1,5 +1,6 @@
 import { AppDataSource } from "../config/data-source";
 import { Tarefa } from "../entities/Tarefa";
+import { Usuario } from "../entities/Usuario";
 import { Cor } from "../enums/cores";
 import { TarefaData } from "../enums/interfaces";
 import { Status } from "../enums/status";
@@ -35,8 +36,6 @@ export class TarefaService {
         return tarefa;
     }
     
-    
-    
     async obterTarefas(){
         const tarefas = await this.tarefaRepository.find()
         return tarefas;
@@ -47,24 +46,23 @@ export class TarefaService {
         return tarefa;
     }
 
+    async obterTarefasPorIdUsuario(usuario: Usuario){
+        const tarefas = await this.tarefaRepository.find({ where: { usuario: usuario }})
+        return tarefas
+    }
+
     async atualizarTarefa(tarefaId: number, data: TarefaData){
-        // Buscar a tarefa pelo ID
         const tarefa = await this.tarefaRepository.findOneBy({id: tarefaId});
-    
-        // Verificar se a tarefa existe
         if (!tarefa) {
             throw new Error(`Tarefa com o ID ${tarefaId} não encontrada.`);
         }
-    
-        // Atualizar as propriedades da tarefa com os dados fornecidos
         tarefa.titulo = data.titulo;
         tarefa.descricao = data.descricao;
         tarefa.dt_criacao = data.dt_criacao;
         tarefa.dt_conclusao = data.dt_conclusao;
         tarefa.status = Status[data.status as keyof typeof Status];
         tarefa.tipo = Tipo[data.tipo as keyof typeof Tipo];
-    
-        // Salvar a tarefa atualizada
+
         const tarefaAtualizada = await this.tarefaRepository.save(tarefa);
         
         return tarefaAtualizada;

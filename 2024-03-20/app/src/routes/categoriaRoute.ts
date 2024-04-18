@@ -28,6 +28,4 @@ export default function categoriaRoute (app: FastifyInstance) {
     app.delete('/categoria/:id', (request, reply) => {
         categoriaController.removerCategoria(request, reply);
     })
-
-    //LISTAR TODAS AS CATEGORIAS DE UM USUARIO
 }

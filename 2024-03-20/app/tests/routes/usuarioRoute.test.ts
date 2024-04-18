@@ -57,6 +57,17 @@ describe('Testes da usuarioRoute', () => {
     expect(response.statusCode).toBe(401);
   });
 
+  test('GET /usuario/tarefas/:id lista as tarefas de um usuario', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/usuario/tarefas/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
   test('POST /usuario/login/ loga um usuário', async () => {
     const response = await app.inject({
       method: 'POST',

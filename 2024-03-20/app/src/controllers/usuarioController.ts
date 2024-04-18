@@ -2,12 +2,15 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { UsuarioService } from "../services/usuarioService";
 import { LoginData, UsuarioData } from "../enums/interfaces";
 import { SERVER_KEY } from "../../app";
+import { TarefaService } from "../services/tarefaService";
 
 export class UsuarioController {
     private usuarioService: UsuarioService;
+    private tarefaService: TarefaService;
 
     constructor(){
         this.usuarioService = new UsuarioService();
+        this.tarefaService = new TarefaService();
     }
 
     // CREATE
@@ -79,6 +82,36 @@ export class UsuarioController {
                 return;
             }
             reply.send({usuario, SERVER_KEY});
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // OBTER CATEGORIAS
+    async obterCategorias(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const usuarioId = Number((request.params as { id: string }).id);
+            const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // OBTER TAREFAS DE UM USUARIO
+    async obterTarefasPorUsuario(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const usuarioId = Number((request.params as { id: string }).id);
+            const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+            if (!usuario) {
+                reply.status(404).send("Usuário não encontrado");
+                return;
+            }
+
+            const tarefas = await this.tarefaService.obterTarefasPorIdUsuario(usuario);
+            reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");

@@ -28,5 +28,12 @@ export default function usuarioRoute (app: FastifyInstance) {
     app.post('/usuario/login/', (request, reply) => {
         usuarioController.logarUsuario(request, reply);
     })
-
+    // OBTER TODAS AS TAREFAS DE UM USUARIO
+    app.get('/usuario/tarefas/:id', (request, reply) => {
+        usuarioController.obterTarefasPorUsuario(request, reply);
+    })
+    // OBTER TODAS AS CATEGORIAS DE UM USUARIO
+    app.get('/usuario/categorias/:id', (request, reply) => {
+        usuarioController.obterCategorias(request, reply);
+    })
 }
