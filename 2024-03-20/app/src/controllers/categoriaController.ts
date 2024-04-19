@@ -1,19 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CategoriaService } from "../services/categoriaService";
 import { CategoriaData } from "../enums/interfaces";
+import categoriaService from "../services/categoriaService";
 
 export class CategoriaController {
-    private categoriaService: CategoriaService;
-
-    constructor(){
-        this.categoriaService = new CategoriaService();
-    }
-
     // CREATE
     async criarCategoria(request:FastifyRequest, reply:FastifyReply){
         try {
             const data = request.body as CategoriaData;
-            const novaCategoria = await this.categoriaService.criarCategoria(data);
+            const novaCategoria = await categoriaService.criarCategoria(data);
             reply.send(novaCategoria);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -23,7 +17,7 @@ export class CategoriaController {
     // READ
     async obterCategorias(request:FastifyRequest, reply:FastifyReply){
         try {
-            const categorias = await this.categoriaService.obterCategorias();
+            const categorias = await categoriaService.obterCategorias();
             reply.send(categorias);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -34,7 +28,7 @@ export class CategoriaController {
     async obterCategoriaId(request:FastifyRequest, reply:FastifyReply){
         try {
             const categoriaId = Number((request.params as { id: string }).id);
-            const categoria = await this.categoriaService.obterCategoriaId(categoriaId);
+            const categoria = await categoriaService.obterCategoriaId(categoriaId);
             reply.send(categoria);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -47,7 +41,7 @@ export class CategoriaController {
         try {
             const categoriaId = Number((request.params as { id: string }).id);
             const data = request.body as CategoriaData;
-            const categoria = await this.categoriaService.atualizarCategoria(categoriaId, data);
+            const categoria = await categoriaService.atualizarCategoria(categoriaId, data);
             reply.send(categoria);
 
         } catch (error: any) {
@@ -59,7 +53,7 @@ export class CategoriaController {
     async removerCategoria(request:FastifyRequest, reply:FastifyReply){
         try {
             const categoriaId = Number((request.params as { id: string }).id);
-            const categoria = await this.categoriaService.removerCategoria(categoriaId);
+            const categoria = await categoriaService.removerCategoria(categoriaId);
             reply.send(categoria);
             reply.send( { "message": "Categoria removida."});
         } catch (error: any) {

@@ -1,26 +1,17 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { TarefaData, UsuarioData } from "../enums/interfaces";
-import { TarefaService } from "../services/tarefaService";
-import { UsuarioService } from "../services/usuarioService";
-import { CategoriaService } from "../services/categoriaService";
+import tarefaService from "../services/tarefaService";
+import usuarioService from "../services/usuarioService";
+import categoriaService from "../services/categoriaService";
 
 export class TarefaController {
-    private tarefaService: TarefaService;
-    private usuarioService: UsuarioService;
-    private categoriaService: CategoriaService;
-
-    constructor(){
-        this.tarefaService = new TarefaService();
-        this.usuarioService = new UsuarioService();
-        this.categoriaService = new CategoriaService();
-    }
 
     // CREATE
     async criarTarefa(request:FastifyRequest, reply:FastifyReply){
         try {
             const data = request.body as TarefaData;
-            const novaTarefa = await this.tarefaService.criarTarefa(data);
-            const usuario = await this.usuarioService
+            const novaTarefa = await tarefaService.criarTarefa(data);
+            const usuario = await usuarioService
             reply.send(novaTarefa);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -30,7 +21,7 @@ export class TarefaController {
     // READ
     async obterTarefa(request:FastifyRequest, reply:FastifyReply){
         try {
-            const tarefas = await this.tarefaService.obterTarefas();
+            const tarefas = await tarefaService.obterTarefas();
             reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -41,7 +32,7 @@ export class TarefaController {
     async obterTarefaId(request:FastifyRequest, reply:FastifyReply){
         try {
             const tarefaId = Number((request.params as { id: string }).id);
-            const tarefa = await this.tarefaService.obterTarefaId(tarefaId);
+            const tarefa = await tarefaService.obterTarefaId(tarefaId);
             reply.send(tarefa);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -54,7 +45,7 @@ export class TarefaController {
         try {
             const tarefaId = Number((request.params as { id: string }).id);
             const data = request.body as TarefaData;
-            const tarefa = await this.tarefaService.atualizarTarefa(tarefaId, data);
+            const tarefa = await tarefaService.atualizarTarefa(tarefaId, data);
             reply.send(tarefa);
 
         } catch (error: any) {
@@ -66,7 +57,7 @@ export class TarefaController {
     async removerTarefa(request:FastifyRequest, reply:FastifyReply){
         try {
             const tarefaId = Number((request.params as { id: string }).id);
-            const tarefa = await this.tarefaService.removerTarefa(tarefaId);
+            const tarefa = await tarefaService.removerTarefa(tarefaId);
             reply.send(tarefa);
             reply.send( { "message": "Tarefa removida."});
         } catch (error: any) {
@@ -78,14 +69,14 @@ export class TarefaController {
     async obterTarefasPorIdUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
             const data = request.body as TarefaData;
-            const usuario = await this.usuarioService.obterUsuarioId(data.usuario);
+            const usuario = await usuarioService.obterUsuarioId(data.usuario);
 
             if (!usuario) {
                 reply.status(404).send("Usuário não encontrado");
                 return;
             }
 
-            const tarefas = await this.tarefaService.obterTarefasPorIdUsuario(usuario);
+            const tarefas = await tarefaService.obterTarefasPorIdUsuario(usuario);
             return tarefas
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -97,14 +88,14 @@ export class TarefaController {
     async obterTarefasPorCategoriaId(request:FastifyRequest, reply:FastifyReply){
         try {
             const categoriaId = Number((request.params as { id: string }).id);
-            const categoria = await this.categoriaService.obterCategoriaId(categoriaId);
+            const categoria = await categoriaService.obterCategoriaId(categoriaId);
 
             if (!categoria) {
                 reply.status(404).send("Categoria não encontrada");
                 return;
             }
 
-            const tarefas = await this.tarefaService.obterTarefasPorCategoria(categoria);
+            const tarefas = await tarefaService.obterTarefasPorCategoria(categoria);
             reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -115,7 +106,7 @@ export class TarefaController {
     // OBTER TAREFAS CONCLUIDAS
     async obterTarefasConcluidas(request:FastifyRequest, reply:FastifyReply){
         try {
-            const tarefas = await this.tarefaService.obterTarefasConcluidas( );
+            const tarefas = await tarefaService.obterTarefasConcluidas( );
             reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -126,7 +117,7 @@ export class TarefaController {
     // OBTER TAREFAS PENDENTES
     async obterTarefasPendentes(request:FastifyRequest, reply:FastifyReply){
         try {
-            const tarefas = await this.tarefaService.obterTarefasPendentes();
+            const tarefas = await tarefaService.obterTarefasPendentes();
             reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -138,14 +129,14 @@ export class TarefaController {
 async encontrarTarefaMaisAntiga(request: FastifyRequest, reply: FastifyReply) {
     try {
         const usuarioId = Number((request.params as { id: string }).id);
-        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
         if (!usuario) {
             reply.status(404).send("Usuário não encontrado");
             return;
         }
 
-        const tarefaMaisAntiga = await this.tarefaService.encontrarTarefaMaisAntiga(usuario);
+        const tarefaMaisAntiga = await tarefaService.encontrarTarefaMaisAntiga(usuario);
         reply.send(tarefaMaisAntiga);
     } catch (error: any) {
         console.error("Erro: ", error);
@@ -157,14 +148,14 @@ async encontrarTarefaMaisAntiga(request: FastifyRequest, reply: FastifyReply) {
 async encontrarTarefaDescricaoMaisLonga(request: FastifyRequest, reply: FastifyReply) {
     try {
         const usuarioId = Number((request.params as { id: string }).id);
-        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
         if (!usuario) {
             reply.status(404).send("Usuário não encontrado");
             return;
         }
 
-        const tarefaDescricaoMaisLonga = await this.tarefaService.encontrarTarefaDescricaoMaisLonga(usuario);
+        const tarefaDescricaoMaisLonga = await tarefaService.encontrarTarefaDescricaoMaisLonga(usuario);
         reply.send(tarefaDescricaoMaisLonga);
     } catch (error: any) {
         console.error("Erro: ", error);
@@ -176,14 +167,14 @@ async encontrarTarefaDescricaoMaisLonga(request: FastifyRequest, reply: FastifyR
 async calcularMediaConclusao(request: FastifyRequest, reply: FastifyReply) {
     try {
         const usuarioId = Number((request.params as { id: string }).id);
-        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
         if (!usuario) {
             reply.status(404).send("Usuário não encontrado");
             return;
         }
 
-        const mediaConclusao = await this.tarefaService.calcularMediaConclusao(usuario);
+        const mediaConclusao = await tarefaService.calcularMediaConclusao(usuario);
         reply.send({ mediaConclusao });
     } catch (error: any) {
         console.error("Erro: ", error);
@@ -195,14 +186,14 @@ async calcularMediaConclusao(request: FastifyRequest, reply: FastifyReply) {
 async encontrarTarefaMaisRecente(request: FastifyRequest, reply: FastifyReply) {
     try {
         const usuarioId = Number((request.params as { id: string }).id);
-        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
         if (!usuario) {
             reply.status(404).send("Usuário não encontrado");
             return;
         }
 
-        const tarefaMaisRecente = await this.tarefaService.encontrarTarefaMaisRecente(usuario);
+        const tarefaMaisRecente = await tarefaService.encontrarTarefaMaisRecente(usuario);
         reply.send(tarefaMaisRecente);
     } catch (error: any) {
         console.error("Erro: ", error);
@@ -214,14 +205,14 @@ async encontrarTarefaMaisRecente(request: FastifyRequest, reply: FastifyReply) {
 async contarTotalTarefasUsuario(request: FastifyRequest, reply: FastifyReply) {
     try {
         const usuarioId = Number((request.params as { id: string }).id);
-        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+        const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
         if (!usuario) {
             reply.status(404).send("Usuário não encontrado");
             return;
         }
 
-        const totalTarefas = await this.tarefaService.contarTotalTarefasUsuario(usuario);
+        const totalTarefas = await tarefaService.contarTotalTarefasUsuario(usuario);
         reply.send({ totalTarefas });
     } catch (error: any) {
         console.error("Erro: ", error);
@@ -239,7 +230,7 @@ async contarTotalTarefasUsuario(request: FastifyRequest, reply: FastifyReply) {
                 return;
             }
 
-            const tarefasVencendo = await this.tarefaService.obterTarefasVencendoNoPeriodo(dataInicial, dataFinal);
+            const tarefasVencendo = await tarefaService.obterTarefasVencendoNoPeriodo(dataInicial, dataFinal);
             reply.send(tarefasVencendo);
         } catch (error: any) {
             console.error("Erro: ", error);

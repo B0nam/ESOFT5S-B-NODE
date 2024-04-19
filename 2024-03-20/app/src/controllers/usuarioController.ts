@@ -1,27 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UsuarioService } from "../services/usuarioService";
 import { LoginData, UsuarioData } from "../enums/interfaces";
 import { SERVER_KEY } from "../../app";
-import { TarefaService } from "../services/tarefaService";
-import { CategoriaService } from "../services/categoriaService";
-import { Usuario } from "../entities/Usuario";
+import usuarioService from "../services/usuarioService";
+import categoriaService from "../services/categoriaService";
+import tarefaService from "../services/tarefaService";
 
 export class UsuarioController {
-    private usuarioService: UsuarioService;
-    private tarefaService: TarefaService;
-    private categoriaService: CategoriaService;
-
-    constructor(){
-        this.usuarioService = new UsuarioService();
-        this.tarefaService = new TarefaService();
-        this.categoriaService = new CategoriaService();
-    }
-
     // CREATE
     async criarUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
             const data = request.body as UsuarioData;
-            const novoUsuario = await this.usuarioService.criarUsuario(data);
+            const novoUsuario = await usuarioService.criarUsuario(data);
             reply.send(novoUsuario);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -31,7 +20,7 @@ export class UsuarioController {
     // READ
     async obterUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
-            const usuarios = await this.usuarioService.obterUsuarios();
+            const usuarios = await usuarioService.obterUsuarios();
             reply.send(usuarios);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -42,7 +31,7 @@ export class UsuarioController {
     async obterUsuarioId(request:FastifyRequest, reply:FastifyReply){
         try {
             const usuarioId = Number((request.params as { id: string }).id);
-            const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+            const usuario = await usuarioService.obterUsuarioId(usuarioId);
             reply.send(usuario);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -55,7 +44,7 @@ export class UsuarioController {
         try {
             const usuarioId = Number((request.params as { id: string }).id);
             const data = request.body as UsuarioData;
-            const usuario = await this.usuarioService.atualizarUsuario(usuarioId, data);
+            const usuario = await usuarioService.atualizarUsuario(usuarioId, data);
             reply.send(usuario);
 
         } catch (error: any) {
@@ -67,7 +56,7 @@ export class UsuarioController {
     async removerUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
             const usuarioId = Number((request.params as { id: string }).id);
-            const usuario = await this.usuarioService.removerUsuario(usuarioId);
+            const usuario = await usuarioService.removerUsuario(usuarioId);
             reply.send(usuario);
             reply.send( { "message": "Usuario removido."});
         } catch (error: any) {
@@ -80,7 +69,7 @@ export class UsuarioController {
     async logarUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
             const data = request.body as LoginData;
-            const usuario = await this.usuarioService.logarUsuario(data);
+            const usuario = await usuarioService.logarUsuario(data);
             if(!usuario){
                 reply.status(403).send("Acesso não autorizado.");
                 return;
@@ -96,14 +85,14 @@ export class UsuarioController {
     async obterCategorias(request:FastifyRequest, reply:FastifyReply){
         try {
             const usuarioId = Number((request.params as { id: string }).id);
-            const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+            const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
             if (!usuario) {
                 reply.status(404).send("Usuário não encontrado");
                 return;
             }
 
-            const categorias = await this.categoriaService.obterCategoriasPorIdUsuario(usuario);
+            const categorias = await categoriaService.obterCategoriasPorIdUsuario(usuario);
             reply.send(categorias);
         } catch (error: any) {
             console.error("Erro: ", error);
@@ -115,14 +104,14 @@ export class UsuarioController {
     async obterTarefasPorUsuario(request:FastifyRequest, reply:FastifyReply){
         try {
             const usuarioId = Number((request.params as { id: string }).id);
-            const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+            const usuario = await usuarioService.obterUsuarioId(usuarioId);
 
             if (!usuario) {
                 reply.status(404).send("Usuário não encontrado");
                 return;
             }
 
-            const tarefas = await this.tarefaService.obterTarefasPorIdUsuario(usuario);
+            const tarefas = await tarefaService.obterTarefasPorIdUsuario(usuario);
             reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);

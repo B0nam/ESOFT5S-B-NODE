@@ -1,10 +1,8 @@
 import { AppDataSource } from "../config/data-source";
 import { Usuario } from "../entities/Usuario";
-import { Cor } from "../enums/cores";
 import { LoginData, UsuarioData } from "../enums/interfaces";
-import { Queries } from "./queries";
 
-export class UsuarioService {
+class UsuarioService {
 
     usuarioRepository = AppDataSource.getRepository(Usuario)
 
@@ -41,3 +39,5 @@ export class UsuarioService {
         return usuario;
     }
 }
+
+export default new UsuarioService()

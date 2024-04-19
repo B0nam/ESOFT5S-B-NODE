@@ -7,25 +7,22 @@ import { Cor } from "../enums/cores";
 import { TarefaData } from "../enums/interfaces";
 import { Status } from "../enums/status";
 import { Tipo } from "../enums/tipos";
-import { CategoriaService } from "./categoriaService";
-import { Queries } from "./queries";
-import { UsuarioService } from "./usuarioService";
+import usuarioService from "./usuarioService";
+import categoriaService from "./categoriaService";
 
-export class TarefaService {
+class TarefaService {
 
     tarefaRepository = AppDataSource.getRepository(Tarefa)
-    categoriaService = new CategoriaService()
-    usuarioService = new UsuarioService()
 
     async criarTarefa(data: TarefaData){
-        const usuario = await this.usuarioService.obterUsuarioId(data.usuario);
+        const usuario = await usuarioService.obterUsuarioId(data.usuario);
         if (!usuario) {
             throw new Error('[-] Usuário não encontrado');
         }
     
         const categoriasIds = Array.isArray(data.categoria) ? data.categoria : [data.categoria];
         const categorias = await Promise.all(categoriasIds.map(async (categoriaId) => {
-            const categoria = await this.categoriaService.obterCategoriaId(categoriaId);
+            const categoria = await categoriaService.obterCategoriaId(categoriaId);
             if (!categoria) {
                 throw new Error(`[-] Categoria com ID ${categoriaId} não encontrada`);
             }
@@ -163,3 +160,5 @@ export class TarefaService {
     }
 
 }
+
+export default new TarefaService()

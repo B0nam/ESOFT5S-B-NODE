@@ -4,12 +4,9 @@ import { Tarefa } from "../entities/Tarefa";
 import { Usuario } from "../entities/Usuario";
 import { Cor } from "../enums/cores";
 import { CategoriaData } from "../enums/interfaces";
-import { Queries } from "./queries";
-import { TarefaService } from "./tarefaService";
+import tarefaService from "./tarefaService";
 
-export class CategoriaService {
-
-    private tarefaService = new TarefaService; 
+class CategoriaService {
     categoriaRepository = AppDataSource.getRepository(Categoria)
 
     async criarCategoria(data: CategoriaData){
@@ -30,7 +27,7 @@ export class CategoriaService {
     }
 
     async obterCategoriasPorIdUsuario(usuario: Usuario) {
-        const tarefas = await this.tarefaService.obterTarefasPorIdUsuario(usuario);
+        const tarefas = await tarefaService.obterTarefasPorIdUsuario(usuario);
         const categorias: Categoria[] = [];
     
         for (const tarefa of tarefas) {
@@ -58,3 +55,5 @@ export class CategoriaService {
         return categoria
     }
 }
+
+export default new CategoriaService()
