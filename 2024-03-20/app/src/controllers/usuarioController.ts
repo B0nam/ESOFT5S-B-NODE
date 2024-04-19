@@ -3,14 +3,18 @@ import { UsuarioService } from "../services/usuarioService";
 import { LoginData, UsuarioData } from "../enums/interfaces";
 import { SERVER_KEY } from "../../app";
 import { TarefaService } from "../services/tarefaService";
+import { CategoriaService } from "../services/categoriaService";
+import { Usuario } from "../entities/Usuario";
 
 export class UsuarioController {
     private usuarioService: UsuarioService;
     private tarefaService: TarefaService;
+    private categoriaService: CategoriaService;
 
     constructor(){
         this.usuarioService = new UsuarioService();
         this.tarefaService = new TarefaService();
+        this.categoriaService = new CategoriaService();
     }
 
     // CREATE
@@ -93,6 +97,14 @@ export class UsuarioController {
         try {
             const usuarioId = Number((request.params as { id: string }).id);
             const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+            if (!usuario) {
+                reply.status(404).send("Usuário não encontrado");
+                return;
+            }
+
+            const categorias = await this.categoriaService.obterCategoriasPorIdUsuario(usuario);
+            reply.send(categorias);
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");
