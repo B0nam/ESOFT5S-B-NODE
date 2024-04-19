@@ -1,4 +1,5 @@
 import { AppDataSource } from "../config/data-source";
+import { Categoria } from "../entities/Categoria";
 import { Tarefa } from "../entities/Tarefa";
 import { Usuario } from "../entities/Usuario";
 import { Cor } from "../enums/cores";
@@ -48,6 +49,11 @@ export class TarefaService {
 
     async obterTarefasPorIdUsuario(usuario: Usuario){
         const tarefas = await this.tarefaRepository.find({ where: { usuario: usuario }})
+        return tarefas
+    }
+
+    async obterTarefasPorCategoria(categoria: Categoria){
+        const tarefas = await this.tarefaRepository.find({ where: { categoria: categoria }})
         return tarefas
     }
 

@@ -2,15 +2,17 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { TarefaData, UsuarioData } from "../enums/interfaces";
 import { TarefaService } from "../services/tarefaService";
 import { UsuarioService } from "../services/usuarioService";
-import { Usuario } from "../entities/Usuario";
+import { CategoriaService } from "../services/categoriaService";
 
 export class TarefaController {
     private tarefaService: TarefaService;
     private usuarioService: UsuarioService;
+    private categoriaService: CategoriaService;
 
     constructor(){
         this.tarefaService = new TarefaService();
         this.usuarioService = new UsuarioService();
+        this.categoriaService = new CategoriaService();
     }
 
     // CREATE
@@ -85,6 +87,25 @@ export class TarefaController {
 
             const tarefas = await this.tarefaService.obterTarefasPorIdUsuario(usuario);
             return tarefas
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // OBTER TAREFAS POR CATEGORIA
+    async obterTarefasPorCategoriaId(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const categoriaId = Number((request.params as { id: string }).id);
+            const categoria = await this.categoriaService.obterCategoriaId(categoriaId);
+
+            if (!categoria) {
+                reply.status(404).send("Categoria não encontrada");
+                return;
+            }
+
+            const tarefas = await this.tarefaService.obterTarefasPorCategoria(categoria);
+            reply.send(tarefas);
         } catch (error: any) {
             console.error("Erro: ", error);
             reply.status(500).send("Erro interno no servidor");

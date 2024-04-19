@@ -30,6 +30,17 @@ describe('Testes da tarefaRoute', () => {
 
     expect(response.statusCode).toBe(401);
   });
+  
+  test('GET /tarefas/categoria/:id retorna tarefas com base na categoria', async () => {
+    const categoriaId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefas/categoria/${categoriaId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
 
   test('PUT /tarefas/:id atualiza uma tarefa existente', async () => {
     const tarefaId = '1';

@@ -24,7 +24,8 @@ export default function tarefaRoute (app: FastifyInstance) {
     app.delete('/tarefa/:id', (request, reply) => {
         tarefaController.removerTarefa(request, reply);
     })
-    // LISTAR TODAS AS TAREFAS POR USUARIO
-
-
+    // LISTAR TODAS AS TAREFAS POR CATEGORIA
+    app.get('/tarefa/categoria/:id', (request, reply) => {
+        tarefaController.obterTarefasPorCategoriaId(request, reply);
+    })
 }
