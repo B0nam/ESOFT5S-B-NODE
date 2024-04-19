@@ -16,6 +16,14 @@ export default function tarefaRoute (app: FastifyInstance) {
     app.get('/tarefa', (request, reply) => {
         tarefaController.obterTarefa(request, reply);
     })
+    // OBTER TAREFAS CONCLUIDAS
+    app.get('/tarefa/concluidas/', (request, reply) => {
+        tarefaController.obterTarefasConcluidas(request, reply);
+    })
+    // OBTER TAREFAS PENDENTES
+    app.get('/tarefa/pendentes/', (request, reply) => {
+        tarefaController.obterTarefasPendentes(request, reply);
+    })
     // ATUALIZAR TAREFA EXISTENTE
     app.put('/tarefa/:id', (request, reply) => {
         tarefaController.atualizarTarefa(request, reply);

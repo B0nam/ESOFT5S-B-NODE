@@ -42,6 +42,24 @@ describe('Testes da tarefaRoute', () => {
     expect(response.statusCode).toBe(401);
   });
 
+  test('GET /tarefas/concluidas/ retorna tarefas concluidas', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefas/concluidas/`
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefas/pendentes/ retorna tarefas pendentes', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefas/pendentes/`
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
   test('PUT /tarefas/:id atualiza uma tarefa existente', async () => {
     const tarefaId = '1';
 

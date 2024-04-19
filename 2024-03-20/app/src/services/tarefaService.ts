@@ -57,6 +57,16 @@ export class TarefaService {
         return tarefas
     }
 
+    async obterTarefasConcluidas(){
+        const tarefas = await this.tarefaRepository.find({ where: { status: Status.CONCLUIDO}});
+        return tarefas
+    }
+
+    async obterTarefasPendentes(){
+        const tarefas = await this.tarefaRepository.find({ where: { status: Status.PENDENTE}});
+        return tarefas
+    }
+
     async atualizarTarefa(tarefaId: number, data: TarefaData){
         const tarefa = await this.tarefaRepository.findOneBy({id: tarefaId});
         if (!tarefa) {

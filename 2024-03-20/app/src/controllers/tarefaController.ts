@@ -111,4 +111,26 @@ export class TarefaController {
             reply.status(500).send("Erro interno no servidor");
         }
     }
+
+        // OBTER TAREFAS CONCLUIDAS
+        async obterTarefasConcluidas(request:FastifyRequest, reply:FastifyReply){
+            try {
+                const tarefas = await this.tarefaService.obterTarefasConcluidas( );
+                reply.send(tarefas);
+            } catch (error: any) {
+                console.error("Erro: ", error);
+                reply.status(500).send("Erro interno no servidor");
+            }
+        }
+
+        // OBTER TAREFAS PENDENTES
+        async obterTarefasPendentes(request:FastifyRequest, reply:FastifyReply){
+            try {
+                const tarefas = await this.tarefaService.obterTarefasPendentes();
+                reply.send(tarefas);
+            } catch (error: any) {
+                console.error("Erro: ", error);
+                reply.status(500).send("Erro interno no servidor");
+            }
+        }
 }
