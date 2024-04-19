@@ -112,25 +112,139 @@ export class TarefaController {
         }
     }
 
-        // OBTER TAREFAS CONCLUIDAS
-        async obterTarefasConcluidas(request:FastifyRequest, reply:FastifyReply){
-            try {
-                const tarefas = await this.tarefaService.obterTarefasConcluidas( );
-                reply.send(tarefas);
-            } catch (error: any) {
-                console.error("Erro: ", error);
-                reply.status(500).send("Erro interno no servidor");
-            }
+    // OBTER TAREFAS CONCLUIDAS
+    async obterTarefasConcluidas(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const tarefas = await this.tarefaService.obterTarefasConcluidas( );
+            reply.send(tarefas);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // OBTER TAREFAS PENDENTES
+    async obterTarefasPendentes(request:FastifyRequest, reply:FastifyReply){
+        try {
+            const tarefas = await this.tarefaService.obterTarefasPendentes();
+            reply.send(tarefas);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
+    // ENCONTRAR TAREFA MAIS ANTIGA
+async encontrarTarefaMaisAntiga(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const usuarioId = Number((request.params as { id: string }).id);
+        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+        if (!usuario) {
+            reply.status(404).send("Usuário não encontrado");
+            return;
         }
 
-        // OBTER TAREFAS PENDENTES
-        async obterTarefasPendentes(request:FastifyRequest, reply:FastifyReply){
-            try {
-                const tarefas = await this.tarefaService.obterTarefasPendentes();
-                reply.send(tarefas);
-            } catch (error: any) {
-                console.error("Erro: ", error);
-                reply.status(500).send("Erro interno no servidor");
-            }
+        const tarefaMaisAntiga = await this.tarefaService.encontrarTarefaMaisAntiga(usuario);
+        reply.send(tarefaMaisAntiga);
+    } catch (error: any) {
+        console.error("Erro: ", error);
+        reply.status(500).send("Erro interno no servidor");
+    }
+}
+
+// ENCONTRAR TAREFA COM DESCRIÇÃO MAIS LONGA
+async encontrarTarefaDescricaoMaisLonga(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const usuarioId = Number((request.params as { id: string }).id);
+        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+        if (!usuario) {
+            reply.status(404).send("Usuário não encontrado");
+            return;
         }
+
+        const tarefaDescricaoMaisLonga = await this.tarefaService.encontrarTarefaDescricaoMaisLonga(usuario);
+        reply.send(tarefaDescricaoMaisLonga);
+    } catch (error: any) {
+        console.error("Erro: ", error);
+        reply.status(500).send("Erro interno no servidor");
+    }
+}
+
+// CALCULAR MÉDIA DE CONCLUSÃO DE TAREFAS
+async calcularMediaConclusao(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const usuarioId = Number((request.params as { id: string }).id);
+        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+        if (!usuario) {
+            reply.status(404).send("Usuário não encontrado");
+            return;
+        }
+
+        const mediaConclusao = await this.tarefaService.calcularMediaConclusao(usuario);
+        reply.send({ mediaConclusao });
+    } catch (error: any) {
+        console.error("Erro: ", error);
+        reply.status(500).send("Erro interno no servidor");
+    }
+}
+
+// ENCONTRAR TAREFA MAIS RECENTE
+async encontrarTarefaMaisRecente(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const usuarioId = Number((request.params as { id: string }).id);
+        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+        if (!usuario) {
+            reply.status(404).send("Usuário não encontrado");
+            return;
+        }
+
+        const tarefaMaisRecente = await this.tarefaService.encontrarTarefaMaisRecente(usuario);
+        reply.send(tarefaMaisRecente);
+    } catch (error: any) {
+        console.error("Erro: ", error);
+        reply.status(500).send("Erro interno no servidor");
+    }
+}
+
+// CONTAR TOTAL DE TAREFAS DE UM USUÁRIO
+async contarTotalTarefasUsuario(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const usuarioId = Number((request.params as { id: string }).id);
+        const usuario = await this.usuarioService.obterUsuarioId(usuarioId);
+
+        if (!usuario) {
+            reply.status(404).send("Usuário não encontrado");
+            return;
+        }
+
+        const totalTarefas = await this.tarefaService.contarTotalTarefasUsuario(usuario);
+        reply.send({ totalTarefas });
+    } catch (error: any) {
+        console.error("Erro: ", error);
+        reply.status(500).send("Erro interno no servidor");
+    }
+}
+
+    // OBTER TAREFAS VENCENDO NO PERÍODO
+    async obterTarefasVencendoNoPeriodo(request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const { dataInicial, dataFinal } = request.body as { dataInicial: Date, dataFinal: Date };
+
+            if (!dataInicial || !dataFinal) {
+                reply.status(400).send("Os campos 'dataInicial' e 'dataFinal' são obrigatórios.");
+                return;
+            }
+
+            const tarefasVencendo = await this.tarefaService.obterTarefasVencendoNoPeriodo(dataInicial, dataFinal);
+            reply.send(tarefasVencendo);
+        } catch (error: any) {
+            console.error("Erro: ", error);
+            reply.status(500).send("Erro interno no servidor");
+        }
+    }
+
 }

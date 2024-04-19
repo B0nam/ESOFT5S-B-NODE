@@ -81,4 +81,77 @@ describe('Testes da tarefaRoute', () => {
 
     expect(response.statusCode).toBe(401);
   });
+
+  test('POST /tarefa/usuario retorna tarefas de um usuário pelo ID', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/tarefa/usuario',
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('POST /tarefa/vencendo retorna tarefas vencendo no período', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/tarefa/vencendo',
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefa/maisantiga/:id retorna a tarefa mais antiga de um usuário', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefa/maisantiga/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefa/descricaomaislonga/:id retorna a tarefa com descrição mais longa de um usuário', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefa/descricaomaislonga/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefa/mediaconclusao/:id retorna a média de conclusão de tarefas de um usuário', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefa/mediaconclusao/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefa/maisrecente/:id retorna a tarefa mais recente de um usuário', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefa/maisrecente/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('GET /tarefa/total/:id retorna o total de tarefas de um usuário', async () => {
+    const usuarioId = '1';
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/tarefa/total/${usuarioId}`,
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
 });

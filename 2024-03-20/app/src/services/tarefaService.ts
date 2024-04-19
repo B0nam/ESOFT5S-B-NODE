@@ -1,3 +1,4 @@
+import { Between } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { Categoria } from "../entities/Categoria";
 import { Tarefa } from "../entities/Tarefa";
@@ -90,4 +91,75 @@ export class TarefaService {
         await this.tarefaRepository.delete(tarefaId);
         return tarefa
     }
+
+    async obterTarefasVencendoNoPeriodo(dataInicial: Date, dataFinal: Date){
+        const tarefas = await this.tarefaRepository.find();
+        const tarefasVencendo = tarefas.filter(tarefa => {
+            const dataConclusao = new Date(tarefa.dt_conclusao);
+            return dataConclusao >= dataInicial && dataConclusao <= dataFinal && tarefa.status === Status.PENDENTE;
+        });
+        return tarefasVencendo;
+    }
+
+    async contarTotalTarefasUsuario(usuario: Usuario){
+        const tarefas = await this.tarefaRepository.find({
+            where: { usuario }
+        });
+        return tarefas.length;
+    }
+
+    async encontrarTarefaMaisRecente(usuario: Usuario){
+        const tarefasUsuario = await this.tarefaRepository.find({ where: { usuario } });
+
+        if (tarefasUsuario.length === 0) {
+            return undefined;
+        }
+
+        const tarefaMaisRecente = tarefasUsuario.reduce((maisRecente, tarefa) => {
+            return tarefa.dt_criacao > maisRecente.dt_criacao ? tarefa : maisRecente;
+        });
+
+        return tarefaMaisRecente;
+    }
+
+    async calcularMediaConclusao(usuario: Usuario){
+        const tarefasUsuario = await this.tarefaRepository.find({ where: { usuario } });
+
+        if (tarefasUsuario.length === 0) {
+            return 0;
+        }
+
+        const totalTarefas = tarefasUsuario.length;
+        const totalConcluidas = tarefasUsuario.filter(tarefa => tarefa.status === Status.CONCLUIDO).length;
+
+        return totalConcluidas / totalTarefas;
+    }
+
+    async encontrarTarefaDescricaoMaisLonga(usuario: Usuario){
+        const tarefasUsuario = await this.tarefaRepository.find({ where: { usuario } });
+
+        if (tarefasUsuario.length === 0) {
+            return undefined;
+        }
+
+        let tarefaDescricaoMaisLonga = tarefasUsuario[0];
+        tarefasUsuario.forEach(tarefa => {
+            if (tarefa.descricao.length > tarefaDescricaoMaisLonga.descricao.length) {
+                tarefaDescricaoMaisLonga = tarefa;
+            }
+        });
+
+        return tarefaDescricaoMaisLonga;
+    }
+
+    async encontrarTarefaMaisAntiga(usuario: Usuario){
+        const tarefasUsuario = await this.tarefaRepository.find({ where: { usuario }, order: { dt_criacao: "ASC" } });
+
+        if (tarefasUsuario.length === 0) {
+            return undefined;
+        }
+
+        return tarefasUsuario[0];
+    }
+
 }
