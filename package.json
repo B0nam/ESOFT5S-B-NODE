@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "typescript-class-validator": "^0.0.6"
+  }
+}
